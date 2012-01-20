@@ -86,7 +86,8 @@ class zzFbSdkGuardAdapter
   protected function updateProfile($profile)
   {
     $profile->facebook = $this->facebook_data['link'];
-    $profile->birthday = date('Y-m-d', strtotime($this->facebook_data['birthday']));
+    if (isset($this->facebook_data['birthday']))
+      $profile->birthday = date('Y-m-d', strtotime($this->facebook_data['birthday']));
     $profile->firstname = $this->facebook_data['first_name'];
     $profile->lastname = $this->facebook_data['last_name'];
     
@@ -96,9 +97,12 @@ class zzFbSdkGuardAdapter
       $profile->email_facebook = $this->facebook_data['email'];
     }
     
-    $sex = array('M.', 'Mme', 'Mlle');
-    $profile->sex = $sex[$this->getCivilite($this->facebook_data['gender'], $this->facebook_data['relationship_status'])];
-    $profile->type_gender_id = ($sex[$this->getCivilite($this->facebook_data['gender'], $this->facebook_data['relationship_status'])] + 1);
+    if (isset($this->facebook_data['relationship_status']))
+    {
+      $sex = array('M.', 'Mme', 'Mlle');
+      $profile->sex = $sex[$this->getCivilite($this->facebook_data['gender'], $this->facebook_data['relationship_status'])];
+      $profile->type_gender_id = ($sex[$this->getCivilite($this->facebook_data['gender'], $this->facebook_data['relationship_status'])] + 1);
+    }
   }
   
   public function linkGuardUser($user)
