@@ -54,9 +54,9 @@ class zzFbSdk
     
     try
     {
-      if (null !== $this->facebook->getSession())
+      $user = $this->facebook->getUser();
+      if ($user)
       {
-        $user = $this->facebook->getUser();
         $me = $this->facebook('/me');
       }
     }
